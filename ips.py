@@ -20,7 +20,6 @@ _block_log: list[dict]    = []
 IPS_ENABLED    = True
 MAX_LOG_ENTRIES = 10_000   # V06: cap log to prevent memory exhaustion
 
-# V01: strict IP validation — rejects anything that isn't a bare IPv4 or IPv6
 _IPV4_RE = re.compile(
     r"^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$"
 )
@@ -64,7 +63,6 @@ def block_ip(ip: str, reason: str = "manual", auto: bool = False) -> bool:
         print(f"[ips] block_ip: invalid IP rejected: {ip!r}")
         return False
 
-    # Sanitise reason string — strip control characters (defence in depth)
     reason = re.sub(r"[\x00-\x1f\x7f]", "", str(reason))[:120]
 
     with _lock:
