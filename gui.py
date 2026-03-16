@@ -24,7 +24,6 @@ from collections import defaultdict
 import mailer
 import ips as IPS_MODULE
 
-# ── palette ────────────────────────────────────────────────────────────────────
 BG      = "#0b0f14"
 PANEL   = "#141920"
 PANEL2  = "#1c2330"
@@ -62,8 +61,6 @@ FM_TITLE= ("Consolas", 11, "bold")
 
 def _sev(kind): return KIND_SEV.get(kind, "INFO")
 
-
-# ── App ────────────────────────────────────────────────────────────────────────
 class App:
     def __init__(self, root, alert_queue):
         self.root        = root
@@ -85,7 +82,6 @@ class App:
         self.root.after(1500, self._refresh_chart)
         self.root.after(2000, self._refresh_threats)
 
-    # ── layout ─────────────────────────────────────────────────────────────────
 
     def _build(self):
         r = self.root
@@ -856,8 +852,7 @@ class App:
         self._thresh_status = tk.Label(th_card, text="", bg=PANEL,
                                         fg=MUTED, font=FM_SM)
         self._thresh_status.pack(anchor="w")
-
-        # ── Interface selector ────────────────────────────────────────────────
+      
         iface_card = tk.Frame(left, bg=PANEL, padx=20, pady=16)
         iface_card.pack(fill="x")
         tk.Label(iface_card, text="Network Interface", bg=PANEL,
@@ -875,7 +870,6 @@ class App:
         tk.Label(iface_row, text="(restart required)", bg=PANEL,
                  fg=MUTED, font=FM_SM).pack(side="left", padx=8)
 
-        # ── About panel ────────────────────────────────────────────────────────
         about = tk.Frame(right, bg=PANEL, padx=20, pady=20)
         about.pack(fill="both", expand=True)
         tk.Label(about, text="About NPS-IDS", bg=PANEL,
@@ -949,9 +943,7 @@ class App:
     def _tick(self):
         self._clock.config(text=time.strftime("%Y-%m-%d  %H:%M:%S"))
         self.root.after(1000, self._tick)
-
-    # ── Core poll loop ─────────────────────────────────────────────────────────
-
+      
     def _poll(self):
         batch = []
         while True:
@@ -1048,9 +1040,6 @@ class App:
             w.writerow(["timestamp","kind","src_ip","message","severity"])
             w.writerows(self.all_alerts)
         messagebox.showinfo("Export CSV", f"Saved to:\n{path}")
-
-
-# ── entry point ────────────────────────────────────────────────────────────────
 
 def run_gui(alert_queue):
     root = tk.Tk()
