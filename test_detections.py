@@ -33,9 +33,6 @@ import sys
 import time
 import pytest
 
-
-# ── reload detections between tests so state is fresh ────────────────────────
-
 def _fresh():
     """Return a freshly imported detections module with clean state."""
     if "detections" in sys.modules:
