@@ -46,9 +46,7 @@ _SAFE_IP_RE = re.compile(r"^[a-fA-F0-9.:]{3,45}$")
 def _safe_filename_part(s: str, fallback: str) -> str:
     """Strip any character that could escape the captures/ directory."""
     s = str(s).strip()
-    # allow only alphanumerics, underscore, hyphen, dot
     cleaned = re.sub(r"[^a-zA-Z0-9._-]", "_", s)
-    # prevent leading dots (hidden files / relative path tricks)
     cleaned = cleaned.lstrip(".")
     return cleaned[:40] if cleaned else fallback
 
