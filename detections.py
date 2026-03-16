@@ -12,7 +12,6 @@ SECURITY FIX applied:
 import time
 from collections import defaultdict, deque, OrderedDict
 
-# ── thresholds ────────────────────────────────────────────────────────────────
 PORT_SCAN_PORT_THRESHOLD  = 15
 PORT_SCAN_WINDOW          = 5
 DOS_PACKET_THRESHOLD      = 200
@@ -32,9 +31,6 @@ ICMP_LARGE_PAYLOAD        = 1024
 
 # V09: maximum unique IPs tracked per detection state dict
 MAX_TRACKED_IPS = 50_000
-
-
-# ── bounded dict helper ───────────────────────────────────────────────────────
 
 class _BoundedDict:
     """
@@ -73,8 +69,6 @@ class _BoundedDict:
 def _new_bd():
     return _BoundedDict(MAX_TRACKED_IPS)
 
-
-# ── per-IP state (all bounded) ────────────────────────────────────────────────
 _port_history   = defaultdict(deque)
 _packet_times   = defaultdict(deque)
 _failed_login   = defaultdict(deque)
@@ -103,9 +97,6 @@ def _get_bounded(store: defaultdict, key: str) -> deque:
         except StopIteration:
             pass
     return store[key]
-
-
-# ── detection functions ───────────────────────────────────────────────────────
 
 def on_new_connection_attempt(src_ip: str, dst_port: int):
     now = time.time()
