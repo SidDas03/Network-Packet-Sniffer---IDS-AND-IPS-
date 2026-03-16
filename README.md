@@ -32,7 +32,7 @@ It was built as a **security engineering portfolio project** — production-grad
 ├─────────────────────────────────────────────────────────────────────────┤
 │  CRITICAL: 3    HIGH: 12    MEDIUM: 8    LOW: 5    INFO: 0    ERROR: 0  │
 ├─────────────────────────────────────────────────────────────────────────┤
-│  [🔴 Live Alerts] [📊 Analytics] [🎯 Top Threats] [🛡 IPS] [📧 Email] [⚙ Settings] │
+│  [Live Alerts] [Analytics] [Top Threats] [IPS] [Email] [⚙ Settings]     │
 │                                                                         │
 │  [10:42:01] [CRITICAL] 192.168.1.55    SYN flood – rate >150 SYNs/win  │
 │  [10:42:03] [HIGH    ] 10.0.0.22       Port scan – 17 unique ports      │
