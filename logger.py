@@ -37,7 +37,6 @@ CREATE INDEX IF NOT EXISTS idx_src_ip   ON alerts(src_ip);
 CREATE INDEX IF NOT EXISTS idx_severity ON alerts(severity);
 """
 
-# Valid severity values — anything else is normalised to INFO
 _VALID_SEVERITIES = frozenset({"CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO", "ERROR"})
 
 
@@ -51,11 +50,10 @@ def _init() -> None:
     with _lock:
         with _conn() as c:
             c.executescript(_DDL)
-    # V05: restrict DB file to owner read/write only after creation
     try:
         os.chmod(str(DB_PATH), stat.S_IRUSR | stat.S_IWUSR)
     except Exception:
-        pass  # Windows doesn't support chmod — silently skip
+        pass  
 
 _init()
 
@@ -66,7 +64,6 @@ def log_alert(kind: str, src_ip: str, message: str,
     now = time.time()
     ts_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now))
 
-    # normalise / clamp inputs
     kind     = str(kind    or "unknown")[:64]
     src_ip   = str(src_ip  or "unknown")[:45]
     message  = str(message or "")[:512]
@@ -82,7 +79,6 @@ def log_alert(kind: str, src_ip: str, message: str,
                     (now, ts_str, kind, src_ip, message, severity, int(bool(blocked)))
                 )
     except sqlite3.OperationalError as e:
-        # V08: report database errors explicitly
         print(f"[logger] DB write failed (operational): {e}")
     except sqlite3.DatabaseError as e:
         print(f"[logger] DB write failed (database): {e}")
@@ -112,7 +108,6 @@ def get_all() -> list[dict]:
     except Exception as e:
         print(f"[logger] get_all failed: {e}")     # V08
         return []
-
 
 def get_summary(hours: int = 24) -> dict:
     hours = max(1, min(hours, 8760))   # clamp: 1h – 1y
