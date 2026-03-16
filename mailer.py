@@ -18,7 +18,7 @@ import os
 import time
 import threading
 
-# ── SMTP config ───────────────────────────────────────────────────────────────
+
 SMTP_SERVER = os.environ.get("IDS_SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT   = int(os.environ.get("IDS_SMTP_PORT", "465"))
 SENDER      = os.environ.get("IDS_EMAIL_SENDER",   "") or ""
@@ -31,7 +31,6 @@ for _ev in ("IDS_EMAIL_PASSWORD",):
         os.environ[_ev] = ""          # overwrite before deletion
         del os.environ[_ev]
 
-# ── throttle knobs ────────────────────────────────────────────────────────────
 COOLDOWN_SECONDS    = 300
 IP_COOLDOWN_SECONDS = 120
 MAX_EMAILS_PER_DAY  = 50
@@ -58,7 +57,6 @@ SEVERITY = {
 }
 _SEV_RANK = {"LOW": 0, "MEDIUM": 1, "HIGH": 2, "CRITICAL": 3, "ERROR": 4}
 
-# ── state ─────────────────────────────────────────────────────────────────────
 _lock           = threading.Lock()
 _kind_last_sent : dict = {}
 _ip_last_sent   : dict = {}
@@ -66,7 +64,6 @@ _emails_today   : int  = 0
 _day_marker     : str  = ""
 stats = {"sent": 0, "suppressed": 0, "failed": 0}
 
-# ── V04: header injection sanitiser ──────────────────────────────────────────
 _HEADER_STRIP_RE = re.compile(r"[\r\n\x00]")
 
 def _safe(s: str, max_len: int = 200) -> str:
@@ -75,9 +72,6 @@ def _safe(s: str, max_len: int = 200) -> str:
     CR, LF, and NUL are the primary injection vectors.
     """
     return _HEADER_STRIP_RE.sub("", str(s))[:max_len]
-
-
-# ── helpers ───────────────────────────────────────────────────────────────────
 
 def _creds():
     """Read module-level vars at call time (GUI sets them after import)."""
@@ -142,7 +136,6 @@ def _do_send(server, port, sender, password, receiver,
         f"{body}"
     ).encode("utf-8")
 
-    # attempt 1: SMTP_SSL port 465
     try:
         ctx = ssl.create_default_context()
         with smtplib.SMTP_SSL(server, 465, context=ctx, timeout=10) as s:
@@ -155,8 +148,7 @@ def _do_send(server, port, sender, password, receiver,
         return False, f"Receiver address refused: {receiver}"
     except Exception:
         pass
-
-    # attempt 2: STARTTLS port 587
+      
     try:
         ctx = ssl.create_default_context()
         with smtplib.SMTP(server, 587, timeout=10) as s:
@@ -172,9 +164,6 @@ def _do_send(server, port, sender, password, receiver,
         return False, f"Receiver address refused: {receiver}"
     except Exception as e:
         return False, f"Both SSL:465 and STARTTLS:587 failed: {e}"
-
-
-# ── public API ────────────────────────────────────────────────────────────────
 
 def send_alert(kind: str, src_ip: str, detail: str) -> None:
     if not _configured():
