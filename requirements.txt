@@ -1,0 +1,41 @@
+# ============================================================
+#  NPS-IDS — Requirements
+#  Install: pip install -r requirements.txt
+#  Linux:   pip install -r requirements.txt --break-system-packages
+# ============================================================
+
+# ── Core packet capture (mandatory) ─────────────────────────
+scapy>=2.5.0
+
+# ── Testing (run: pytest test_detections.py -v) ─────────────
+pytest>=7.4.0
+
+# ── Standard-library modules used (no install needed) ───────
+# tkinter      GUI                ships with CPython on Windows/macOS
+#              On Ubuntu/Debian:  sudo apt install python3-tk
+# sqlite3      Alert log          built-in
+# smtplib      Email alerts       built-in
+# ssl          TLS encryption     built-in
+# csv          Export             built-in
+# argparse     CLI flags          built-in
+# threading    Concurrency        built-in
+# collections  deque/defaultdict  built-in
+# pathlib      File paths         built-in
+# subprocess   iptables calls     built-in
+# re           IP/input sanitise  built-in
+# html         Report escaping    built-in
+# stat         DB permissions     built-in
+# json         Config loading     built-in
+# signal       Graceful shutdown  built-in
+
+# ── Optional: offline IP geolocation ────────────────────────
+# After installing, download GeoLite2-City.mmdb from:
+#   https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
+# Place GeoLite2-City.mmdb in the project root directory.
+# geoip2>=4.0.0
+
+# ── Platform notes ───────────────────────────────────────────
+# Linux   : Full support. iptables auto-blocking requires root.
+# macOS   : Full support. IPS uses in-process block only (no iptables).
+# Windows : Packet capture requires Npcap (https://npcap.com).
+#           IPS uses in-process block only. GUI fully supported.

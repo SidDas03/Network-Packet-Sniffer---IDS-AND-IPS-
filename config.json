@@ -1,0 +1,66 @@
+{
+  "_comment": "NPS-IDS configuration file — edit here or via the GUI Settings tab",
+
+  "smtp": {
+    "server":   "smtp.gmail.com",
+    "port":     465,
+    "sender":   "",
+    "password": "",
+    "receiver": ""
+  },
+
+  "sniffer": {
+    "interface":       null,
+    "bpf_filter":      "ip or arp"
+  },
+
+  "thresholds": {
+    "PORT_SCAN_PORT_THRESHOLD":  15,
+    "PORT_SCAN_WINDOW":           5,
+    "DOS_PACKET_THRESHOLD":     200,
+    "DOS_WINDOW":                10,
+    "SYN_FLOOD_THRESHOLD":      150,
+    "SYN_FLOOD_WINDOW":          10,
+    "ICMP_FLOOD_THRESHOLD":     100,
+    "ICMP_FLOOD_WINDOW":          5,
+    "UDP_FLOOD_THRESHOLD":      300,
+    "UDP_FLOOD_WINDOW":          10,
+    "FAILED_LOGIN_THRESHOLD":    10,
+    "FAILED_LOGIN_WINDOW":       60,
+    "HTTP_BRUTE_THRESHOLD":      20,
+    "HTTP_BRUTE_WINDOW":         30
+  },
+
+  "email_alerts": {
+    "enabled":          false,
+    "min_severity":     "MEDIUM",
+    "cooldown_seconds": 300,
+    "ip_cooldown_seconds": 120,
+    "max_per_day":      50
+  },
+
+  "ips": {
+    "enabled":     true,
+    "auto_block_kinds": [
+      "syn_flood", "dos", "arp_spoofing",
+      "icmp_flood", "udp_flood", "port_scan",
+      "http_brute_force", "xmas_scan", "null_scan", "fin_scan"
+    ]
+  },
+
+  "pcap": {
+    "enabled":      true,
+    "pre_buffer":   10,
+    "capture_sevs": ["CRITICAL", "HIGH"]
+  },
+
+  "reports": {
+    "auto_daily":    false,
+    "daily_hour":    0,
+    "auto_email":    false
+  },
+
+  "logger": {
+    "retain_days": 30
+  }
+}
