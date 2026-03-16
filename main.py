@@ -94,7 +94,6 @@ def _apply_config(cfg: dict) -> None:
         except Exception as e:
             print(f"[main] Could not apply thresholds: {e}")
 
-    # IPS toggle
     ips_cfg = cfg.get("ips", {})
     if not ips_cfg.get("enabled", True):
         try:
