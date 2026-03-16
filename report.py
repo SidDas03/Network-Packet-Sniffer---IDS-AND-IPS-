@@ -32,8 +32,6 @@ from collections import defaultdict
 
 REPORT_DIR = Path(__file__).parent / "reports"
 
-# ── HTML template pieces ──────────────────────────────────────────────────────
-
 _CSS = """
 body{font-family:Consolas,monospace;background:#0d1117;color:#c9d1d9;margin:0;padding:24px}
 h1{color:#58a6ff;margin-bottom:4px}
@@ -125,7 +123,6 @@ def generate(hours: int = 24) -> Path:
         f'<span class="lbl">TOTAL</span></div>'
     )
 
-    # ── kind bar chart ─────────────────────────────────────────────────────────
     bars = ""
     if kind_counts:
         max_v = max(kind_counts.values()) or 1
@@ -142,11 +139,9 @@ def generate(hours: int = 24) -> Path:
             )
     else:
         bars = "<p style='color:#6a737d'>No data for this period.</p>"
-
-    # ── top IPs table ──────────────────────────────────────────────────────────
+      
     ip_rows = ""
     for rank, (ip, cnt) in enumerate(top_ips, 1):
-        # V12: escape IP — attacker could craft a packet with a weird src
         ip_rows += (
             f"<tr><td>{rank}</td>"
             f"<td>{html.escape(str(ip))}</td>"
@@ -155,7 +150,6 @@ def generate(hours: int = 24) -> Path:
     if not ip_rows:
         ip_rows = "<tr><td colspan='3' style='color:#6a737d'>No data.</td></tr>"
 
-    # ── full alert log ─────────────────────────────────────────────────────────
     alert_rows = ""
     for row in recent:
         sev = row.get("severity", "INFO")
@@ -175,7 +169,6 @@ def generate(hours: int = 24) -> Path:
     if not alert_rows:
         alert_rows = "<tr><td colspan='6' style='color:#6a737d'>No alerts logged.</td></tr>"
 
-    # ── assemble ───────────────────────────────────────────────────────────────
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
